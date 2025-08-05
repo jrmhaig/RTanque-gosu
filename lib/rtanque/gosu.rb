@@ -1,6 +1,6 @@
 module RTanque
   class Gosu
-    def initialize match
+    def initialize(match)
       @window = RTanque::Gosu::Window.new match
     end
 
@@ -9,7 +9,7 @@ module RTanque
       @window.show
     end
 
-    RESOURCE_DIR = File.expand_path('../../../resources', __FILE__)
+    RESOURCE_DIR = File.expand_path('../../resources', __dir__)
     def self.resource_path(*components)
       File.join(RESOURCE_DIR, *components)
     end

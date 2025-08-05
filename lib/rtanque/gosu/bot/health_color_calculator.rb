@@ -2,11 +2,10 @@ module RTanque
   class Gosu
     class Bot
       class HealthColorCalculator
-
         # different health-clors as RGB values
-        FULL_HEALTH_COLOR   = [ 74, 190,  74].map { |v| v/255.0 }
-        MEDIUM_HEALTH_COLOR = [255, 190,   0].map { |v| v/255.0 }
-        LOW_HEALTH_COLOR    = [220,   0,   0].map { |v| v/255.0 }
+        FULL_HEALTH_COLOR   = [74, 190, 74].map { |v| v / 255.0 }
+        MEDIUM_HEALTH_COLOR = [255, 190,   0].map { |v| v / 255.0 }
+        LOW_HEALTH_COLOR    = [220,   0,   0].map { |v| v / 255.0 }
 
         attr_reader :health
 
@@ -26,9 +25,9 @@ module RTanque
 
         def color_between(color_a, color_b, percentage)
           [
-            (color_b[0] - color_a[0]) * percentage + color_a[0],
-            (color_b[1] - color_a[1]) * percentage + color_a[1],
-            (color_b[2] - color_a[2]) * percentage + color_a[2]
+            ((color_b[0] - color_a[0]) * percentage) + color_a[0],
+            ((color_b[1] - color_a[1]) * percentage) + color_a[1],
+            ((color_b[2] - color_a[2]) * percentage) + color_a[2]
           ]
         end
       end

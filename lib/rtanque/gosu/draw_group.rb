@@ -21,7 +21,7 @@ module RTanque
       end
 
       def draw
-        self.each do |drawable|
+        each do |drawable|
           drawable.draw
         end
       end
