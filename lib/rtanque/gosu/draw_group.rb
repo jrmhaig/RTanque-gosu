@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RTanque
   class Gosu
     class DrawGroup
@@ -21,9 +23,7 @@ module RTanque
       end
 
       def draw
-        each do |drawable|
-          drawable.draw
-        end
+        each(&:draw)
       end
     end
   end
