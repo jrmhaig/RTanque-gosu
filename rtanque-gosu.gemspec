@@ -20,10 +20,10 @@ For a full description of the game see the RTanque gem.}
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
 
-  gem.add_dependency 'gosu', '~> 0.13.1'
-  gem.add_dependency 'texplay', '>= 0.4.4pre'
+  gem.add_dependency 'gosu', '~> 1.4.0'
   gem.add_dependency 'rtanque', '~> 0.2.0'
 
   gem.add_development_dependency 'pry'
   gem.add_development_dependency 'rspec', '~> 3.7.0'
+  gem.add_development_dependency 'rubocop'
 end
