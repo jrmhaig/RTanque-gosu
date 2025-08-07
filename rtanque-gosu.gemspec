@@ -3,7 +3,7 @@
 require 'English'
 lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'rtanque/gosu-version'
+require 'rtanque/gosu_version'
 
 Gem::Specification.new do |gem|
   gem.name          = 'rtanque-gosu'
