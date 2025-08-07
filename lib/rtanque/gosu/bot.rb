@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'gosu'
-require 'texplay'
 
 require 'rtanque/gosu/bot/health_color_calculator'
 
@@ -19,7 +18,6 @@ module RTanque
         @body_image = ::Gosu::Image.new(@window, Gosu.resource_path('images/body.png'))
         @turret_image = ::Gosu::Image.new(@window, Gosu.resource_path('images/turret.png'))
         @radar_image = ::Gosu::Image.new(@window, Gosu.resource_path('images/radar.png'))
-        @score_bar_image = TexPlay.create_blank_image(@window, HEALTH_BAR_WIDTH, HEALTH_BAR_HEIGHT)
         @name_font = ::Gosu::Font.new(@window, Window::FONT_NAME, Window::SMALL_FONT_SIZE)
         @x_factor = 1
         @y_factor = 1
@@ -56,18 +54,18 @@ module RTanque
         x, y = *position
         x_health = health.round(0)
         health_color = color_for_health
-        @score_bar_image.paint do
-          rect 0, 0, HEALTH_BAR_WIDTH, HEALTH_BAR_HEIGHT, color: [0, 0, 0, 0], fill: true
-          rect 0, 0, x_health, HEALTH_BAR_HEIGHT, color: health_color, fill: true
-        end
-        @score_bar_image.draw(x - ((HEALTH_BAR_WIDTH / 2) * @x_factor), y + ((5 + RTanque::Bot::RADIUS) * @y_factor),
-                              ZOrder::BOT_HEALTH, @x_factor, @y_factor)
+        score_bar_image = ::Gosu::Image.from_blob(
+          HEALTH_BAR_WIDTH, HEALTH_BAR_HEIGHT,
+          ((health_color * x_health) + ("\0\0\0\0" * (HEALTH_BAR_WIDTH - x_health))) * HEALTH_BAR_HEIGHT
+        )
+        score_bar_image.draw(x - ((HEALTH_BAR_WIDTH / 2) * @x_factor), y + ((5 + RTanque::Bot::RADIUS) * @y_factor),
+                             ZOrder::BOT_HEALTH, @x_factor, @y_factor)
       end
 
       private
 
       def color_for_health
-        HealthColorCalculator.new(health).color_as_rgb
+        HealthColorCalculator.new(health).color_as_rgba
       end
 
       def health
