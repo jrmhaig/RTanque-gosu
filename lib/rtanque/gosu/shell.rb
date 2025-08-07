@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'gosu'
 
 module RTanque
@@ -5,26 +7,31 @@ module RTanque
     class Shell
       attr_reader :shell
 
-      DEBUG = ENV["DEBUG_SHELLS"]
+      DEBUG = ENV.fetch('DEBUG_SHELLS', nil)
 
       def initialize(window, shell)
         @window = window
         @shell = shell
         @x0 = shell.position.x
         @y0 = @window.height - shell.position.y
-        @shell_image = ::Gosu::Image.new(@window, Gosu.resource_path("images/bullet.png"))
+        @shell_image = ::Gosu::Image.new(@window, Gosu.resource_path('images/bullet.png'))
       end
 
       def draw
-        position = [self.shell.position.x, @window.height - self.shell.position.y]
-        @shell_image.draw_rot(position[0], position[1], ZOrder::SHELL, 0, 0.5, 0.5)
+        return debug_draw if DEBUG
 
-        if DEBUG then
-          white  = ::Gosu::Color::WHITE
-          pos = shell.position
-          x1, y1 = pos.x, @window.height - pos.y
-          @window.draw_line @x0, @y0, white, x1, y1, white, ZOrder::SHELL
-        end
+        position = [shell.position.x, @window.height - shell.position.y]
+        @shell_image.draw_rot(position[0], position[1], ZOrder::SHELL, 0, 0.5, 0.5)
+      end
+
+      private
+
+      def debug_draw
+        white = ::Gosu::Color::WHITE
+        pos = shell.position
+        x1 = pos.x
+        y1 = @window.height - pos.y
+        @window.draw_line @x0, @y0, white, x1, y1, white, ZOrder::SHELL
       end
     end
   end
