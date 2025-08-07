@@ -71,7 +71,7 @@ module RTanque
       private
 
       def background
-        @background ||= ::Gosu::Image.new(self, Gosu.resource_path('images/grass.png'))
+        @background ||= ::Gosu::Image.new(Gosu.resource_path('images/grass.png'))
       end
     end
   end

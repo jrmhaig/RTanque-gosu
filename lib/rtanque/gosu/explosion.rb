@@ -8,10 +8,9 @@ module RTanque
       FRAMES = (1..71)
 
       def initialize(window, explosion)
-        @window = window
         @explosion = explosion
         @position = [explosion.position.x, window.height - explosion.position.y]
-        @explosion_images = FRAMES.map { |i| ::Gosu::Image.new(@window, Gosu.resource_path("images/explosions/explosion2-#{i}.png")) }
+        @explosion_images = FRAMES.map { |i| ::Gosu::Image.new(Gosu.resource_path("images/explosions/explosion2-#{i}.png")) }
       end
 
       def draw

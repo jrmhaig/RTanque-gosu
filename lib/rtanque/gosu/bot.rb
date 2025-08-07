@@ -15,9 +15,9 @@ module RTanque
       def initialize(window, bot)
         @window = window
         @bot = bot
-        @body_image = ::Gosu::Image.new(@window, Gosu.resource_path('images/body.png'))
-        @turret_image = ::Gosu::Image.new(@window, Gosu.resource_path('images/turret.png'))
-        @radar_image = ::Gosu::Image.new(@window, Gosu.resource_path('images/radar.png'))
+        @body_image = ::Gosu::Image.new(Gosu.resource_path('images/body.png'))
+        @turret_image = ::Gosu::Image.new(Gosu.resource_path('images/turret.png'))
+        @radar_image = ::Gosu::Image.new(Gosu.resource_path('images/radar.png'))
         @name_font = ::Gosu::Font.new(@window, Window::FONT_NAME, Window::SMALL_FONT_SIZE)
         @x_factor = 1
         @y_factor = 1
@@ -46,8 +46,8 @@ module RTanque
 
       def draw_name(position)
         x, y = *position
-        @name_font.draw_rel(bot.name, x, y + (RTanque::Bot::RADIUS * @y_factor) + Window::SMALL_FONT_SIZE.to_i,
-                            ZOrder::BOT_NAME, 0.5, 0.5, @x_factor, @y_factor)
+        @name_font.draw_text_rel(bot.name, x, y + (RTanque::Bot::RADIUS * @y_factor) + Window::SMALL_FONT_SIZE.to_i,
+                                 ZOrder::BOT_NAME, 0.5, 0.5, @x_factor, @y_factor)
       end
 
       def draw_health(position)
