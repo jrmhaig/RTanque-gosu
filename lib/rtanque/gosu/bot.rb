@@ -36,11 +36,11 @@ module RTanque
       end
 
       def draw_bot(position)
-        @body_image.draw_rot(position[0], position[1], ZOrder::BOT_BODY, ::Gosu.radians_to_degrees(@bot.heading.to_f),
-                             0.5, 0.5, @x_factor, @y_factor)
-        @turret_image.draw_rot(position[0], position[1], ZOrder::BOT_TURRET,
+        @body_image.draw_rot(*position, ZOrder::BOT_BODY,
+                             ::Gosu.radians_to_degrees(@bot.heading.to_f), 0.5, 0.5, @x_factor, @y_factor)
+        @turret_image.draw_rot(*position, ZOrder::BOT_TURRET,
                                ::Gosu.radians_to_degrees(@bot.turret.heading.to_f), 0.5, 0.5, @x_factor, @y_factor)
-        @radar_image.draw_rot(position[0], position[1], ZOrder::BOT_RADAR,
+        @radar_image.draw_rot(*position, ZOrder::BOT_RADAR,
                               ::Gosu.radians_to_degrees(@bot.radar.heading.to_f), 0.5, 0.5, @x_factor, @y_factor)
       end
 

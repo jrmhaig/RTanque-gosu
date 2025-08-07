@@ -17,7 +17,8 @@ module RTanque
           if tickable.dead?
             @mapped_drawables.delete(tickable)
           else
-            block.call(@mapped_drawables[tickable]) # This invokes @mapped_drawables's block if tickable not already in the hash
+            # This invokes @mapped_drawables's block if tickable not already in the hash
+            block.call(@mapped_drawables[tickable])
           end
         end
       end

@@ -18,11 +18,15 @@ module RTanque
       end
 
       def draw
+        return debug_draw if DEBUG
+
         position = [shell.position.x, @window.height - shell.position.y]
         @shell_image.draw_rot(position[0], position[1], ZOrder::SHELL, 0, 0.5, 0.5)
+      end
 
-        return unless DEBUG
+      private
 
+      def debug_draw
         white = ::Gosu::Color::WHITE
         pos = shell.position
         x1 = pos.x
