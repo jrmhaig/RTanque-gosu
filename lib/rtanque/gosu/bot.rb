@@ -9,6 +9,10 @@ module RTanque
     class Bot
       extend Forwardable
 
+      BODY_IMAGE = ::Gosu::Image.new(Gosu.resource_path('images/body.png'))
+      TURRET_IMAGE = ::Gosu::Image.new(Gosu.resource_path('images/turret.png'))
+      RADAR_IMAGE = ::Gosu::Image.new(Gosu.resource_path('images/radar.png'))
+
       def_delegators :@bot, :health, :name
 
       attr_reader :bot, :x_factor, :y_factor
@@ -16,9 +20,6 @@ module RTanque
       def initialize(window, bot)
         @window = window
         @bot = bot
-        @body_image = ::Gosu::Image.new(Gosu.resource_path('images/body.png'))
-        @turret_image = ::Gosu::Image.new(Gosu.resource_path('images/turret.png'))
-        @radar_image = ::Gosu::Image.new(Gosu.resource_path('images/radar.png'))
         @name_font = ::Gosu::Font.new(@window, Window::FONT_NAME, Window::SMALL_FONT_SIZE)
         @health = Bot::Status.new(self, value: :health)
         @x_factor = 1
@@ -37,9 +38,9 @@ module RTanque
       end
 
       def draw_bot
-        @body_image.draw_rot(x, y, ZOrder::BOT_BODY, @bot.heading.to_degrees, 0.5, 0.5, @x_factor, @y_factor)
-        @turret_image.draw_rot(x, y, ZOrder::BOT_TURRET, @bot.turret.heading.to_degrees, 0.5, 0.5, @x_factor, @y_factor)
-        @radar_image.draw_rot(x, y, ZOrder::BOT_RADAR, @bot.radar.heading.to_degrees, 0.5, 0.5, @x_factor, @y_factor)
+        BODY_IMAGE.draw_rot(x, y, ZOrder::BOT_BODY, @bot.heading.to_degrees, 0.5, 0.5, @x_factor, @y_factor)
+        TURRET_IMAGE.draw_rot(x, y, ZOrder::BOT_TURRET, @bot.turret.heading.to_degrees, 0.5, 0.5, @x_factor, @y_factor)
+        RADAR_IMAGE.draw_rot(x, y, ZOrder::BOT_RADAR, @bot.radar.heading.to_degrees, 0.5, 0.5, @x_factor, @y_factor)
       end
 
       def draw_name
