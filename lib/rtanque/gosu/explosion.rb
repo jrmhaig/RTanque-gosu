@@ -5,22 +5,21 @@ require 'gosu'
 module RTanque
   class Gosu
     class Explosion
-      FRAMES = (1..71)
+      FRAMES = (1..71).map { |i| ::Gosu::Image.new(Gosu.resource_path("images/explosions/explosion2-#{i}.png")) }
 
       def initialize(window, explosion)
         @explosion = explosion
         @position = [explosion.position.x, window.height - explosion.position.y]
-        @explosion_images = FRAMES.map { |i| ::Gosu::Image.new(Gosu.resource_path("images/explosions/explosion2-#{i}.png")) }
       end
 
       def draw
         frame.draw_rot(@position[0], @position[1], 5, ZOrder::EXPLOSION)
       end
 
-      def frame
-        @frames_length ||= @explosion_images.length - 1
-        @explosion_images[(@explosion.percent_dead * @frames_length).floor]
-      end
+      private
+
+      def frame = FRAMES[(@explosion.percent_dead * frames_length).floor]
+      def frames_length = @frames_length ||= FRAMES.length - 1
     end
   end
 end

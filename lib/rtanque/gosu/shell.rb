@@ -7,6 +7,7 @@ module RTanque
     class Shell
       attr_reader :shell
 
+      IMAGE = ::Gosu::Image.new(Gosu.resource_path('images/bullet.png'))
       DEBUG = ENV.fetch('DEBUG_SHELLS', nil)
 
       def initialize(window, shell)
@@ -14,14 +15,13 @@ module RTanque
         @shell = shell
         @x0 = shell.position.x
         @y0 = @window.height - shell.position.y
-        @shell_image = ::Gosu::Image.new(Gosu.resource_path('images/bullet.png'))
       end
 
       def draw
         return debug_draw if DEBUG
 
         position = [shell.position.x, @window.height - shell.position.y]
-        @shell_image.draw_rot(position[0], position[1], ZOrder::SHELL, 0, 0.5, 0.5)
+        IMAGE.draw_rot(position[0], position[1], ZOrder::SHELL, 0, 0.5, 0.5)
       end
 
       private

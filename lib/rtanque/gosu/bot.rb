@@ -1,34 +1,35 @@
 # frozen_string_literal: true
 
 require 'gosu'
-
-require 'rtanque/gosu/bot/health_color_calculator'
+require 'forwardable'
+require 'rtanque/gosu/bot/status'
 
 module RTanque
   class Gosu
     class Bot
-      attr_reader :bot
+      extend Forwardable
 
-      HEALTH_BAR_HEIGHT = 3
-      HEALTH_BAR_WIDTH = 100
+      BODY_IMAGE = ::Gosu::Image.new(Gosu.resource_path('images/body.png'))
+      TURRET_IMAGE = ::Gosu::Image.new(Gosu.resource_path('images/turret.png'))
+      RADAR_IMAGE = ::Gosu::Image.new(Gosu.resource_path('images/radar.png'))
+
+      def_delegators :@bot, :health, :name
+
+      attr_reader :bot, :x_factor, :y_factor
 
       def initialize(window, bot)
         @window = window
         @bot = bot
-        @body_image = ::Gosu::Image.new(Gosu.resource_path('images/body.png'))
-        @turret_image = ::Gosu::Image.new(Gosu.resource_path('images/turret.png'))
-        @radar_image = ::Gosu::Image.new(Gosu.resource_path('images/radar.png'))
         @name_font = ::Gosu::Font.new(@window, Window::FONT_NAME, Window::SMALL_FONT_SIZE)
-        @health_bar_image = ::Gosu::Image.new(Gosu.resource_path('images/bar.png'))
+        @health = Bot::Status.new(self, value: :health)
         @x_factor = 1
         @y_factor = 1
       end
 
       def draw
-        position = [@bot.position.x, @window.height - @bot.position.y]
-        draw_bot(position)
-        draw_name(position)
-        draw_health(position)
+        draw_bot
+        draw_name
+        @health.draw
       end
 
       def grow(factor = 2, step = 0.002)
@@ -36,38 +37,19 @@ module RTanque
         @y_factor += step unless @y_factor > factor
       end
 
-      def draw_bot(position)
-        @body_image.draw_rot(*position, ZOrder::BOT_BODY,
-                             ::Gosu.radians_to_degrees(@bot.heading.to_f), 0.5, 0.5, @x_factor, @y_factor)
-        @turret_image.draw_rot(*position, ZOrder::BOT_TURRET,
-                               ::Gosu.radians_to_degrees(@bot.turret.heading.to_f), 0.5, 0.5, @x_factor, @y_factor)
-        @radar_image.draw_rot(*position, ZOrder::BOT_RADAR,
-                              ::Gosu.radians_to_degrees(@bot.radar.heading.to_f), 0.5, 0.5, @x_factor, @y_factor)
+      def draw_bot
+        BODY_IMAGE.draw_rot(x, y, ZOrder::BOT_BODY, @bot.heading.to_degrees, 0.5, 0.5, @x_factor, @y_factor)
+        TURRET_IMAGE.draw_rot(x, y, ZOrder::BOT_TURRET, @bot.turret.heading.to_degrees, 0.5, 0.5, @x_factor, @y_factor)
+        RADAR_IMAGE.draw_rot(x, y, ZOrder::BOT_RADAR, @bot.radar.heading.to_degrees, 0.5, 0.5, @x_factor, @y_factor)
       end
 
-      def draw_name(position)
-        x, y = *position
+      def draw_name
         @name_font.draw_text_rel(bot.name, x, y + (RTanque::Bot::RADIUS * @y_factor) + Window::SMALL_FONT_SIZE.to_i,
                                  ZOrder::BOT_NAME, 0.5, 0.5, @x_factor, @y_factor)
       end
 
-      def draw_health(position)
-        x, y = *position
-        x_health = health.round(0)
-        health_color = color_for_health
-        @health_bar_image.draw(x - ((HEALTH_BAR_WIDTH / 2) * @x_factor), y + ((5 + RTanque::Bot::RADIUS) * @y_factor),
-                              ZOrder::BOT_HEALTH, x_health / 200.0, 0.5, health_color)
-      end
-
-      private
-
-      def color_for_health
-        HealthColorCalculator.new(health).color
-      end
-
-      def health
-        bot.health
-      end
+      def x = @bot.position.x
+      def y = @window.height - @bot.position.y
     end
   end
 end
